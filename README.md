@@ -1,16 +1,25 @@
-# React + Vite
+# Xdle
+Revamped Xdle game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Installation and setting up
+1. Clone the repository into your device:
+    ```sh
+    git@github.com:Dapples0/Xdle-2.git
+    ```
+2. Move to root directory and install the required packages
+    ```sh
+    cd Xdle-2
+    ```
 
-Currently, two official plugins are available:
+    ```sh
+    npm i
+    ```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Running the frontend
+To run the frontend, run the following line
+  ```sh
+  npm run dev
+  ```
 
-## React Compiler
+  Afterwards, open the local host site link that will appear in the terminal.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
