@@ -1,11 +1,12 @@
 import { useState, useEffect  } from 'react'
 import { InputButton } from './components/InputButton';
 import { HistoryBox, InputBox } from './components/Boxes';
-import './index.css'
 import { VictoryModal, LoseModal } from './components/Modal';
-import { SideButton } from './components/SideButton';
+import { HintButton, RetryButton } from './components/SideButton';
+import './index.css';
 
 function App() {
+  // Initialise state variables
   const [ xdle, setXdle ] = useState(null);
   const [ history, setHistory ] = useState([]);
   const [ tries, setTries ] = useState(0);
@@ -178,11 +179,11 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col justify-center items-center min-h-screen bg-[#1f1e25]'>
+      <div className='flex flex-col justify-center items-center min-h-screen bg-[#1f1e25] p-5'>
         <VictoryModal show={showWinModal} setModal={() => setShowWinModal()}></VictoryModal>
         <LoseModal show={showLoseModal} setModal={() => setShowLoseModal()} num={xdle}></LoseModal>
         <section className='flex flex-row'>
-          <SideButton retry={true} buttonFunction={() => startGame()}>Reset</SideButton>
+          <RetryButton buttonFunction={() => startGame()}>Reset</RetryButton>
           <section className='flex flex-col justify-center items-center pb-5 w-[24rem]'>
             {xdle &&
               history.map((item, index) => 
@@ -190,7 +191,7 @@ function App() {
               )
             }
           </section>
-          <SideButton hint={true} tries={tries} hints={hints}>Hint</SideButton>
+          <HintButton tries={tries} hints={hints}>Hint</HintButton>
         </section>
         <section className='pb-5'>
           <InputBox input={input}></InputBox>
