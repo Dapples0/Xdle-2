@@ -146,7 +146,7 @@ function App() {
       return;
     }
 
-    if (input === xdle) {
+    if (input === xdle.toString()) {
       setShowWinModal(true);
       setGameEnd(true);
       setInput("");
@@ -189,7 +189,7 @@ function App() {
       equality: [],
       multiple: [],
     });
-    setXdle(Math.floor(Math.random() * 99999).toString());
+    setXdle(Math.floor(Math.random() * 99999));
     setShowWinModal(false);
     setShowLoseModal(false);
   }

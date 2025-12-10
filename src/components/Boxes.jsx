@@ -75,7 +75,7 @@ export const HistoryBox = (props) => {
   }
 
   const handlePosition = (item, index) => {
-    const split = handleNum(xdle);
+    const split = handleNum(xdle.toString());
     return split[index] === item;
   }
 
