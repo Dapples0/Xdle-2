@@ -2,14 +2,16 @@ import { useState, useEffect  } from 'react'
 import { InputButton } from './components/InputButton';
 import { HistoryBox, InputBox } from './components/Boxes';
 import './index.css'
-import { VictoryModal } from './components/Modal';
+import { VictoryModal, LoseModal } from './components/Modal';
+import { SideButton } from './components/SideButton';
 
 function App() {
   const [ xdle, setXdle ] = useState(null);
-  const [ history, setHistory ] = useState(["12321", "22"]);
+  const [ history, setHistory ] = useState([]);
   const [ tries, setTries ] = useState(0);
-  const [ win, setWin ] = useState(false);
-  const [ showModal, setShowModal ] = useState(false);
+  const [ gameEnd, setGameEnd ] = useState(false);
+  const [ showLoseModal, setShowLoseModal] = useState(false);
+  const [ showWinModal, setShowWinModal ] = useState(false);
   const [ input, setInput ] = useState("");
   const [ hints, setHints ] = useState({
     multiple: [],
@@ -18,7 +20,7 @@ function App() {
   })
 
   const handleInput = (num) => {
-    if (win) {
+    if (gameEnd) {
       return;
     }
 
@@ -28,7 +30,7 @@ function App() {
   }
 
   const removeInput = () => {
-    if (win) {
+    if (gameEnd) {
       return;
     }
 
@@ -38,7 +40,7 @@ function App() {
   }
 
   const clearInput = () => {
-    if (win) {
+    if (gameEnd) {
       return;
     }
     setInput("");
@@ -54,6 +56,7 @@ function App() {
         ...prev,
         multiple: [...prev.multiple, `Is a multiple of ${num}`]
       }));
+      return;
     }
 
     if (num % x === 0) {
@@ -61,6 +64,7 @@ function App() {
         ...prev,
         multiple: [...prev.multiple, `${num} is a multiple of X`]
       }));
+      return;
     }
   }
 
@@ -97,7 +101,7 @@ function App() {
       ...prev,
       range: [...prev.range, 
         (x > num) 
-        ? `${num} is within 1000 numbers of X` 
+        ? `Greater than ${num}` 
         : `Less than ${num}`
         ]
     }));
@@ -105,7 +109,7 @@ function App() {
   }
 
   const handleEnter = () => {
-    if (win) {
+    if (gameEnd) {
       return;
     }
 
@@ -114,21 +118,36 @@ function App() {
     }
 
     if (input === xdle) {
-      setShowModal(true);
-      setWin(true);
+      setShowWinModal(true);
+      setGameEnd(true);
       setInput("");
     } else {
       setTries(tries + 1);
     }
+    const newHistory = [...history];
 
-    setHistory([...history, input]);
+    newHistory[tries] = input;
+    setHistory(newHistory);
+  
+    if (tries + 1 === 6) {
+      setShowLoseModal(true);
+      setInput("");
+    }
+  }
 
-    
+  const openHints = () => {
+    if (tries < 4) {
+      console.log('can"t open hints');
+      return;
+    }
+
+    console.log('can open hints');
   }
 
   const startGame = () => {
-    setWin(false);
-    setHistory(["12321", "22"]);
+    setGameEnd(false);
+    setTries(0);
+    setHistory(["", "", "", "", "", ""]);
     setInput("");
     setHints([{
       multiple: [],
@@ -136,7 +155,8 @@ function App() {
       range: [],
     }]);
     setXdle(Math.floor(Math.random() * 99999).toString());
-    setShowModal(false);
+    setShowWinModal(false);
+    setShowLoseModal(false);
   }
 
   const handleClick = (e) => {  
@@ -149,55 +169,52 @@ function App() {
     if (/^\d$/.test(e.key)) {
       handleInput(e.key);
     }
-
-
   }
 
   useEffect(() => {
-
     startGame();
     window.addEventListener("keydown", handleClick);
   }, []);
 
   return (
     <>
-    <div className='flex flex-col justify-center items-center h-screen bg-[#1f1e25]'>
-      <VictoryModal show={showModal} setModal={() => setShowModal()}></VictoryModal>
-      <section className='flex flex-row gap-[2rem]'>
-        <aside><button type='button' className='text-white cursor-pointer'>Reset</button></aside>    
-        <section className='pb-5'>
-          {xdle &&
-            history.map((item, index) => 
-              <HistoryBox key={index} num={item} xdle={xdle}></HistoryBox>
-            )
-          }
+      <div className='flex flex-col justify-center items-center h-screen bg-[#1f1e25]'>
+        <VictoryModal show={showWinModal} setModal={() => setShowWinModal()}></VictoryModal>
+        <LoseModal show={showLoseModal} setModal={() => setShowLoseModal()} num={xdle}></LoseModal>
+        <section className='flex flex-row'>
+          <SideButton retry={true} buttonFunction={() => startGame()}>Reset</SideButton>
+          <section className='flex flex-col justify-center items-center pb-5 w-[24rem]'>
+            {xdle &&
+              history.map((item, index) => 
+                <HistoryBox key={index} num={item} xdle={xdle}></HistoryBox>
+              )
+            }
+          </section>
+          <SideButton hint={true} tries={tries} buttonFunction={() => openHints()}>Hint</SideButton>
         </section>
-        <aside><button type='button' className='text-white cursor-pointer'>Hint</button></aside>   
-      </section>
-
-      <section className='pb-5'>
-        <p className='text-white'>{xdle}</p>
-        <InputBox input={input}></InputBox>
-      </section>
-      <section className='grid grid-cols-3 gap-2'>
-        <InputButton buttonFunction={() => handleInput(1)}><p className='text-xl'>1</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(2)}><p className='text-xl'>2</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(3)}><p className='text-xl'>3</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(4)}><p className='text-xl'>4</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(5)}><p className='text-xl'>5</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(6)}><p className='text-xl'>6</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(7)}><p className='text-xl'>7</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(8)}><p className='text-xl'>8</p></InputButton>
-        <InputButton buttonFunction={() => handleInput(9)}><p className='text-xl'>9</p></InputButton>
-        <InputButton buttonFunction={() => removeInput()}>Back</InputButton>
-        <InputButton buttonFunction={() => handleInput(0)}><p className='text-xl'>0</p></InputButton>
-        <InputButton buttonFunction={() => handleEnter()}>Enter</InputButton>
-      </section>
-      <section className='pt-2'>
-        <InputButton buttonFunction={() => clearInput()}>Clear</InputButton>
-      </section>
-      
-    </div>
+        <section className='pb-5'>
+          <p className='text-white'>{xdle}</p>
+          <InputBox input={input}></InputBox>
+        </section>
+        <section className='grid grid-cols-3 gap-2'>
+          <InputButton buttonFunction={() => handleInput(1)}><p className='text-xl'>1</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(2)}><p className='text-xl'>2</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(3)}><p className='text-xl'>3</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(4)}><p className='text-xl'>4</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(5)}><p className='text-xl'>5</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(6)}><p className='text-xl'>6</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(7)}><p className='text-xl'>7</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(8)}><p className='text-xl'>8</p></InputButton>
+          <InputButton buttonFunction={() => handleInput(9)}><p className='text-xl'>9</p></InputButton>
+          <InputButton buttonFunction={() => removeInput()}>Back</InputButton>
+          <InputButton buttonFunction={() => handleInput(0)}><p className='text-xl'>0</p></InputButton>
+          <InputButton buttonFunction={() => handleEnter()}>Enter</InputButton>
+        </section>
+        <section className='pt-2'>
+          <InputButton buttonFunction={() => clearInput()}>Clear</InputButton>
+        </section>
+        
+      </div>
     </>
   )
 }

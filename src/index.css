@@ -1,2 +1,5 @@
 @import "tailwindcss";
 
+.container-rounded .tooltip-rounded {
+  padding: 7px;
+}

@@ -1,13 +1,15 @@
 const Box = (props) => {
-  const { history = false, position = false, num, size } = props;
+  const { history = false, position = false, num, size, filled = false } = props;
 
   const handlePosition = () => {
-    return history ? !position ? "bg-red-900" : "bg-green-600" : "";
+    return filled ? !position ? "bg-red-900" : "bg-green-600" : num !== "" ? "transition-colors duration-100 border-3" : 'transition-colors duration-100';
   }
+
+
   return (
     <>
-      <div className={`flex flex-col justify-center items-center box-border ${size} ${handlePosition()} border-2 text-white text-lg transition-colors duration-100`}
-      style={{ borderColor: (num !== "" && !history) ? '#a3a4a7ff' : '#5b606bff' }}
+      <div className={`flex flex-col justify-center items-center box-border ${size} ${handlePosition()} border-2 text-white text-lg`}
+      style={{ borderColor: history ? filled ? '#1f1e25' : '#393c42ff' : num !== "" ? '#c4c6c9ff' : '#727986ff' }}
       ><p>{num}</p></div>
     </>
   )
@@ -61,7 +63,7 @@ export const HistoryBox = (props) => {
       {
         <div className="flex row gap-2 pb-2">
           {handleNum(num).map((item, index) => 
-            <Box key={index} num={item} size={"size-13"} history={true} position={handlePosition(item, index)}></Box>
+            <Box key={index} num={item} size={"size-13"} history={true} filled={num.length !== 0} position={handlePosition(item, index)}></Box>
           )}
                    
         </div>

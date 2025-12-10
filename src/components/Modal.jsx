@@ -40,3 +40,26 @@ export const VictoryModal = ({ show, setModal }) => {
     </Modal>
   );
 }
+
+
+export const LoseModal = ({ show, setModal, num }) => {
+  if (!show) return null;
+
+  const handleClose = () => {
+    setModal(false);
+  }
+
+  return (
+    <Modal>
+      <button type="button"
+        onClick={() => handleClose()} className="absolute top-3 right-3 text-gray-900 hover:text-gray-500 cursor-pointer dark:text-white dark:hover:text-gray-400">
+        Close
+      </button>
+      <div className="flex flex-col gap-5 justify-center items-center">
+        <section className="flex flex-col justify-center items-center text-white">
+          <p>The number was {num}</p>
+        </section>
+      </div>
+    </Modal>
+  );
+}
