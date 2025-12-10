@@ -18,7 +18,12 @@ const Modal = ({ children }) => {
   );
 }
 
-
+/**
+ * Victory modal component
+ * @param {boolean} show - whether the modal should be shown
+ * @param {Function} setModal - sets modal display 
+ * @returns html component for a victory modal
+ */
 export const VictoryModal = ({ show, setModal }) => {
   if (!show) return null;
 
@@ -41,7 +46,12 @@ export const VictoryModal = ({ show, setModal }) => {
   );
 }
 
-
+/**
+ * Lose modal component
+ * @param {boolean} show - whether the modal should be shown
+ * @param {Function} setModal - sets modal display 
+ * @returns html component for a lose modal
+ */
 export const LoseModal = ({ show, setModal, num }) => {
   if (!show) return null;
 

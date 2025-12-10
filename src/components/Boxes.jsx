@@ -1,3 +1,13 @@
+/**
+ * Box component for history and input boxes
+ * @param {Object} props - props object
+ * @param {boolean} props.history - whether the box originates from history
+ * @param {boolean} props.position - whether the current history box number matches the respective position of the xdle number
+ * @param {number} props.num - the number the box is containing
+ * @param {string} props.size - box size style
+ * @param {boolean} props.filled - whether the box has been filled
+ * @returns a box containing a number
+ */
 const Box = (props) => {
   const { history = false, position = false, num, size, filled = false } = props;
 
@@ -15,7 +25,12 @@ const Box = (props) => {
   )
 }
 
-
+/**
+ * Input box component
+ * @param {Object} props - props object
+ * @param {number} props.input - current inputted number
+ * @returns an input box
+ */
 export const InputBox = (props) => {
   const { input } = props;
 
@@ -41,6 +56,13 @@ export const InputBox = (props) => {
   )
 }
 
+/**
+ * History box component
+ * @param {Object} props - props object
+ * @param {number} props.num - the number the box is containing
+ * @param {number} props.xdle - xdle number
+ * @returns a history box
+ */
 export const HistoryBox = (props) => {
   const { num, xdle } = props;
 
@@ -56,7 +78,6 @@ export const HistoryBox = (props) => {
     const split = handleNum(xdle);
     return split[index] === item;
   }
-
 
   return (
     <>

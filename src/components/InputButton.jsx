@@ -1,3 +1,8 @@
+/**
+ * Input button component
+ * @param {Object} props - props object
+ * @returns a button representing an input
+ */
 export const InputButton = (props) => {
   const { buttonFunction, children } = props;
 

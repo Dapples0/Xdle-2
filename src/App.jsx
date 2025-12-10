@@ -20,6 +20,10 @@ function App() {
     multiple: [],
   })
 
+  /**
+   * Handles adding inputs
+   * @param {number} num - input number
+   */
   const handleInput = (num) => {
     if (gameEnd) {
       return;
@@ -30,6 +34,9 @@ function App() {
     );
   }
 
+  /**
+   * Handles removing inputs
+   */
   const removeInput = () => {
     if (gameEnd) {
       return;
@@ -40,6 +47,9 @@ function App() {
     )
   }
 
+  /**
+   * Clears input
+   */
   const clearInput = () => {
     if (gameEnd) {
       return;
@@ -47,6 +57,11 @@ function App() {
     setInput("");
   }
 
+  /**
+   * Finds multiple hint from input
+   * @param {number} x - xdle number
+   * @param {number} num - input number
+   */
   const multipleHint = (x, num) => {
     if (num === 0 || x === 0) {
         return;
@@ -69,6 +84,11 @@ function App() {
     }
   }
 
+  /**
+   * Finds range hint from input
+   * @param {number} x - xdle number
+   * @param {number} num - input number
+   */
   const rangeHint = (x, num) => {
     const equality = Math.abs(x - num);
     if (equality <= 10) {
@@ -97,6 +117,11 @@ function App() {
 
   }
 
+  /**
+   * Finds equality hint from input
+   * @param {number} x - xdle number
+   * @param {number} num - input number
+   */
   const equalityHint = (x, num) => {
     setHints((prev) => ({
       ...prev,
@@ -109,6 +134,9 @@ function App() {
 
   }
 
+  /**
+   * Handles enter state
+   */
   const handleEnter = () => {
     if (gameEnd) {
       return;
@@ -139,12 +167,18 @@ function App() {
     }
   }
 
+  /**
+   * Handles hints by adding it to hint state object
+   */
   const handleHints = () => {
     equalityHint(xdle, input);
     rangeHint(xdle, input);
     multipleHint(xdle, input);
   }
 
+  /**
+   * Initialises a game
+   */
   const startGame = () => {
     setGameEnd(false);
     setTries(0);
@@ -160,13 +194,17 @@ function App() {
     setShowLoseModal(false);
   }
 
+  /**
+   * Listens to keyboard presses
+   * @param {EventListenerObject} e - event listener
+   */
   const handleClick = (e) => {  
     if (e.key == "Backspace") {
       removeInput();
     }
 
-
-    if (e.repeat) return;   
+    if (e.repeat) return;  
+ 
     if (/^\d$/.test(e.key)) {
       handleInput(e.key);
     }

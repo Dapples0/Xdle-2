@@ -1,5 +1,11 @@
 import { Tooltip } from 'react-tooltip';
 
+/**
+ * Retry button component
+ * @param {Object} props - props component
+ * @param {Function} props.buttonFunction - Function to run when the button is clicked
+ * @param {React.ReactNode} props.children - Button label/content
+ */
 export const RetryButton = (props) => {
   const { children, buttonFunction } = props;
   return (
@@ -16,6 +22,13 @@ export const RetryButton = (props) => {
 
 }
 
+/**
+ * Hint button component
+ * @param {Object} props - props component
+ * @param {number} tries - number of tries
+ * @param {Object} props.hints - hint object
+ * @param {React.ReactNode} props.children - Button label/content
+ */
 export const HintButton = (props) => {
   const { children, tries, hints } = props;
   return (
