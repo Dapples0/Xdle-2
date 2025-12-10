@@ -14,9 +14,9 @@ function App() {
   const [ showWinModal, setShowWinModal ] = useState(false);
   const [ input, setInput ] = useState("");
   const [ hints, setHints ] = useState({
-    multiple: [],
-    lessOrGreater: [],
     range: [],
+    equality: [],
+    multiple: [],
   })
 
   const handleInput = (num) => {
@@ -99,7 +99,7 @@ function App() {
   const equalityHint = (x, num) => {
     setHints((prev) => ({
       ...prev,
-      range: [...prev.range, 
+      equality: [...prev.equality, 
         (x > num) 
         ? `Greater than ${num}` 
         : `Less than ${num}`
@@ -123,25 +123,25 @@ function App() {
       setInput("");
     } else {
       setTries(tries + 1);
+      handleHints();
     }
     const newHistory = [...history];
 
     newHistory[tries] = input;
     setHistory(newHistory);
+    
   
     if (tries + 1 === 6) {
       setShowLoseModal(true);
       setInput("");
+      setGameEnd(true);
     }
   }
 
-  const openHints = () => {
-    if (tries < 4) {
-      console.log('can"t open hints');
-      return;
-    }
-
-    console.log('can open hints');
+  const handleHints = () => {
+    equalityHint(xdle, input);
+    rangeHint(xdle, input);
+    multipleHint(xdle, input);
   }
 
   const startGame = () => {
@@ -149,11 +149,11 @@ function App() {
     setTries(0);
     setHistory(["", "", "", "", "", ""]);
     setInput("");
-    setHints([{
-      multiple: [],
-      lessOrGreater: [],
+    setHints({
       range: [],
-    }]);
+      equality: [],
+      multiple: [],
+    });
     setXdle(Math.floor(Math.random() * 99999).toString());
     setShowWinModal(false);
     setShowLoseModal(false);
@@ -178,7 +178,7 @@ function App() {
 
   return (
     <>
-      <div className='flex flex-col justify-center items-center h-screen bg-[#1f1e25]'>
+      <div className='flex flex-col justify-center items-center min-h-screen bg-[#1f1e25]'>
         <VictoryModal show={showWinModal} setModal={() => setShowWinModal()}></VictoryModal>
         <LoseModal show={showLoseModal} setModal={() => setShowLoseModal()} num={xdle}></LoseModal>
         <section className='flex flex-row'>
@@ -190,10 +190,9 @@ function App() {
               )
             }
           </section>
-          <SideButton hint={true} tries={tries} buttonFunction={() => openHints()}>Hint</SideButton>
+          <SideButton hint={true} tries={tries} hints={hints}>Hint</SideButton>
         </section>
         <section className='pb-5'>
-          <p className='text-white'>{xdle}</p>
           <InputBox input={input}></InputBox>
         </section>
         <section className='grid grid-cols-3 gap-2'>

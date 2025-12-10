@@ -1,13 +1,13 @@
 import { Tooltip } from 'react-tooltip';
 
 export const SideButton = (props) => {
-  const { buttonFunction, children, retry = false, hint = false, tries = 0 } = props;
+  const { buttonFunction, children, retry = false, hint = false, tries = 0, hints } = props;
 
   return (
     <>
       <aside className='pt-5 md:p-5'>
         {retry && <RetryButton buttonFunction={buttonFunction}>{children}</RetryButton>}
-        {hint && <HintButton buttonFunction={buttonFunction} tries={tries}>{children}</HintButton>}
+        {hint && <HintButton tries={tries} hints={hints}>{children}</HintButton>}
       </aside> 
     </>
       
@@ -31,25 +31,33 @@ const RetryButton = (props) => {
 }
 
 const HintButton = (props) => {
-  const { children, buttonFunction, tries } = props;
-
+  const { children, tries, hints } = props;
   return (
-
     <>
-      <div data-tooltip-id="tooltip" data-tooltip-content={tries !== 4 ? `${4 - tries} attempt(s) left to unlock` : ""} className='.container-rounded'>
+      <div data-tooltip-id="tooltip" className='cotainer'>
         <button
           type="button"
           className="group relative cursor-pointer text-white border-1 rounded overflow-hidden w-[3rem] md:w-[4rem] md:h-[2.7rem] pt-1 pb-1 rounded bg-[#1f1e25] hover:bg-[#3f3d4b]"
-          onClick={buttonFunction}>
+          >
           <div
             className="absolute inset-0 bg-green-700 transition-all duration-200 ease-out group-hover:bg-green-600"
             style={{ width: `${(tries / 4) * 100}%` }}>
           </div>
           <span className="relative z-10">{children}</span>
         </button>
-        <Tooltip id="tooltip" place={"bottom"} border="1px solid red" className='tooltip-rounded' style={{ display: 'flex', flexDirection: 'column' }}>
-        </Tooltip>        
+
       </div>
+        <Tooltip id="tooltip" place={"bottom"} border="1px solid red" className='tooltip' openOnClick={true} globalCloseEvents={{"clickOutsideAnchor": true}}>
+          {tries < 4 && <span>{`${4 - tries} attempt(s) left to unlock`}</span>}
+          {tries >= 4 && hints && Object.entries(hints).map(([type, items]) => (
+            items.length > 0 && 
+            <ul key={type}>
+              {items.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>)
+          )}
+        </Tooltip>      
     </>
   )
 
