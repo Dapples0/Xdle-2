@@ -4,7 +4,7 @@ Revamped Xdle game
 # Installation and setting up
 1. Clone the repository into your device:
     ```sh
-    git@github.com:Dapples0/Xdle-2.git
+    git clone https://github.com/Dapples0/Xdle-2.git
     ```
 2. Move to root directory and install the required packages
     ```sh
